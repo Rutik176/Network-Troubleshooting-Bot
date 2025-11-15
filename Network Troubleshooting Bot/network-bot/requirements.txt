@@ -1,0 +1,45 @@
+# Network Troubleshooting Bot - Core Dependencies
+# ===================================================
+
+# Core Web Framework (Required)
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# Dashboard and UI (Required)
+streamlit==1.28.2
+plotly==5.17.0
+pandas==2.1.4
+
+# Database (Required) 
+sqlalchemy==2.0.23
+
+# Network Testing - Core (Required)
+ping3==4.0.4
+
+# HTTP and Configuration (Required)
+aiohttp==3.9.1
+requests==2.31.0
+pyyaml==6.0.1
+
+# Optional Dependencies (Uncomment as needed)
+# ===========================================
+
+# Advanced Network Libraries (Optional)
+# netmiko==4.3.0
+# paramiko==3.4.0
+# pysnmp==4.4.12
+# scapy==2.5.0
+
+# AI and NLP (Optional - requires API keys)
+# langchain==0.0.348
+# openai==1.3.8
+
+# Notification Services (Optional - requires tokens)
+# python-telegram-bot==20.7
+# slack-sdk==3.24.0
+
+# Development and Testing (Optional)
+# pytest==7.4.3
+# pytest-asyncio==0.21.1
+# black==23.11.0

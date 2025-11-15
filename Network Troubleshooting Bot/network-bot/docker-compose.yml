@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # Main API Server
+  network-bot-api:
+    build: .
+    container_name: network-bot-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - DATABASE_URL=sqlite:///./network_bot.db
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./config:/app/config
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    restart: unless-stopped
+    networks:
+      - network-bot-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Streamlit Dashboard
+  network-bot-dashboard:
+    build: .
+    container_name: network-bot-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONPATH=/app
+      - API_BASE_URL=http://network-bot-api:8000
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+    command: streamlit run dashboard/app.py --server.port=8501 --server.address=0.0.0.0
+    restart: unless-stopped
+    depends_on:
+      - network-bot-api
+    networks:
+      - network-bot-net
+
+  # Optional: Redis for caching (if needed later)
+  redis:
+    image: redis:7-alpine
+    container_name: network-bot-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - network-bot-net
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+
+  # Optional: PostgreSQL (alternative to SQLite for production)
+  postgres:
+    image: postgres:15-alpine
+    container_name: network-bot-postgres
+    environment:
+      - POSTGRES_DB=network_bot
+      - POSTGRES_USER=network_bot
+      - POSTGRES_PASSWORD=network_bot_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+    networks:
+      - network-bot-net
+    profiles:
+      - production
+
+networks:
+  network-bot-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  redis-data:
+  postgres-data:

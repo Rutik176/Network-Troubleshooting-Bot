@@ -1,0 +1,102 @@
+# Network Devices Configuration
+devices:
+  - name: "Core Router 1"
+    ip: "192.168.1.1"
+    type: "router"
+    vendor: "cisco"
+    model: "ISR4431"
+    location: "Mumbai"
+    credentials:
+      username: "admin"
+      password: "${DEVICE_PASSWORD_1}"
+    protocols:
+      ssh:
+        port: 22
+      snmp:
+        community: "public"
+        version: "2c"
+    interfaces:
+      - "GigabitEthernet0/0/0"
+      - "GigabitEthernet0/0/1"
+
+  - name: "Distribution Switch 1"
+    ip: "192.168.1.10"
+    type: "switch"
+    vendor: "cisco"
+    model: "Catalyst 9300"
+    location: "Mumbai"
+    credentials:
+      username: "admin"
+      password: "${DEVICE_PASSWORD_2}"
+    protocols:
+      ssh:
+        port: 22
+      snmp:
+        community: "public"
+        version: "2c"
+    interfaces:
+      - "GigabitEthernet1/0/1"
+      - "GigabitEthernet1/0/2"
+
+  - name: "Remote Router Pune"
+    ip: "192.168.2.1"
+    type: "router"
+    vendor: "juniper"
+    model: "MX240"
+    location: "Pune"
+    credentials:
+      username: "netadmin"
+      password: "${DEVICE_PASSWORD_3}"
+    protocols:
+      ssh:
+        port: 22
+      snmp:
+        community: "public"
+        version: "2c"
+    interfaces:
+      - "ge-0/0/0"
+      - "ge-0/0/1"
+
+  - name: "Firewall Main"
+    ip: "192.168.1.254"
+    type: "firewall"
+    vendor: "palo_alto"
+    model: "PA-3220"
+    location: "Mumbai"
+    credentials:
+      username: "admin"
+      password: "${DEVICE_PASSWORD_4}"
+    protocols:
+      ssh:
+        port: 22
+      snmp:
+        community: "public"
+        version: "2c"
+
+# Test Destinations
+test_destinations:
+  - name: "Google DNS"
+    ip: "8.8.8.8"
+    description: "External connectivity test"
+  
+  - name: "Cloudflare DNS"
+    ip: "1.1.1.1"
+    description: "Alternative external connectivity"
+  
+  - name: "Internal Server"
+    ip: "192.168.1.100"
+    description: "Internal network connectivity"
+
+# Network Segments
+network_segments:
+  - name: "Management VLAN"
+    subnet: "192.168.1.0/24"
+    vlan_id: 10
+  
+  - name: "User VLAN"
+    subnet: "192.168.10.0/24"
+    vlan_id: 100
+  
+  - name: "Server VLAN"
+    subnet: "192.168.20.0/24"
+    vlan_id: 200

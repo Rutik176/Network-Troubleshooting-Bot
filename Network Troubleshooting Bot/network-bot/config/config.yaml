@@ -1,0 +1,84 @@
+# Network Troubleshooting Bot Configuration
+app:
+  name: "Network Troubleshooting Bot"
+  version: "1.0.0"
+  debug: true
+  host: "0.0.0.0"
+  port: 8000
+
+# Database Configuration
+database:
+  type: "sqlite"
+  path: "db/network_logs.db"
+  # For PostgreSQL:
+  # host: "localhost"
+  # port: 5432
+  # username: "admin"
+  # password: "password"
+  # database: "network_bot"
+
+# AI and NLP Configuration
+ai:
+  openai_api_key: "${OPENAI_API_KEY}"
+  model: "gpt-3.5-turbo"
+  max_tokens: 1000
+  temperature: 0.7
+
+# Network Testing Configuration
+network:
+  ping:
+    timeout: 5
+    count: 4
+  traceroute:
+    max_hops: 30
+    timeout: 5
+  snmp:
+    community: "public"
+    timeout: 5
+    retries: 3
+
+# Thresholds for Alerts
+thresholds:
+  latency_ms: 100
+  packet_loss_percent: 5
+  interface_utilization_percent: 80
+  cpu_usage_percent: 90
+  memory_usage_percent: 85
+
+# Alert Configuration
+alerts:
+  email:
+    enabled: true
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    username: "${EMAIL_USERNAME}"
+    password: "${EMAIL_PASSWORD}"
+    from_address: "${EMAIL_FROM}"
+    to_addresses: ["admin@company.com"]
+  
+  telegram:
+    enabled: true
+    bot_token: "${TELEGRAM_BOT_TOKEN}"
+    chat_id: "${TELEGRAM_CHAT_ID}"
+  
+  slack:
+    enabled: true
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#network-alerts"
+
+# Dashboard Configuration
+dashboard:
+  refresh_interval: 30  # seconds
+  max_history_days: 7
+  charts:
+    - "latency_trends"
+    - "packet_loss"
+    - "interface_status"
+    - "device_uptime"
+
+# Automation Rules
+automation:
+  enabled: true
+  confirmation_required: true
+  max_retries: 3
+  retry_delay: 30  # seconds
